@@ -1,0 +1,6 @@
+{
+  "name": "Aadish Investments",
+  "description": "Premier Pune-based financial services firm founded in 2014 by Shrinivas Kulkarni and Prachi Kulkarni. Expert guidance in Mutual Funds, SIPs, Life & Health Insurance, and Wealth Planning.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
