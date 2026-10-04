@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PageId } from '../types';
 import { COMPANY_INFO, SERVICES_LIST, GOALS_LIST, TESTIMONIALS, MARKET_UPDATES, BLOG_POSTS } from '../data/content';
 import { SipCalculatorWidget } from '../components/calculators/SipCalculatorWidget';
+import heroFamilyImg from '../assets/images/hero_family_planning_1790590921036.jpg';
 import {
   ShieldCheck,
   TrendingUp,
@@ -132,7 +133,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               {/* Trust Tag */}
               <div className="inline-flex items-center gap-2 text-xs font-semibold text-amber-800 bg-amber-100/70 border border-amber-200/80 px-3.5 py-1.5 rounded-full">
                 <Award className="w-3.5 h-3.5 text-amber-700" />
-                <span>Founder-Led Financial Guidance in Pune Since 2014</span>
+                <span>Founder-Led Financial Guidance in Pune Since 2012</span>
               </div>
 
               {/* Marquee Headline */}
@@ -144,7 +145,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               {/* Supporting Copy */}
               <p className="text-base sm:text-lg text-stone-600 max-w-2xl leading-relaxed">
                 Aadish Investments has been helping individuals, families, professionals,
-                business owners, NRIs, and HNIs make informed financial decisions since 2014.
+                business owners, NRIs, and HNIs make informed financial decisions since 2012.
                 From life protection and health cover to disciplined investments and retirement planning.
               </p>
 
@@ -206,7 +207,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="lg:col-span-5">
               <div className="relative rounded-2xl overflow-hidden shadow-xl border border-stone-200 bg-stone-100 group">
                 <img
-                  src="/src/assets/images/hero_family_planning_1790590921036.jpg"
+                  src={heroFamilyImg}
                   alt="Trusted financial planning consultation with Indian family in Pune"
                   className="w-full h-80 sm:h-96 object-cover object-center group-hover:scale-102 transition-transform duration-500"
                   referrerPolicy="no-referrer"
@@ -455,7 +456,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     Co-Founder & Advisor
                   </span>
                   <span className="text-stone-300">·</span>
-                  <span className="text-stone-500 text-xs">Est. 2014</span>
+                  <span className="text-stone-500 text-xs">Est. 2012</span>
                 </div>
                 <h3 className="font-display text-xl font-bold text-stone-900 mt-1">
                   Shrinivas Kulkarni

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PageId } from '../types';
 import { COMPANY_INFO } from '../data/content';
+import officeImg from '../assets/images/pune_narayan_peth_office_1790590983109.jpg';
 import {
   Award,
   ShieldCheck,
@@ -104,7 +105,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenWhatsApp
             A Legacy of Trust, Protection & Disciplined Wealth Creation
           </h1>
           <p className="text-stone-300 text-sm sm:text-base max-w-2xl leading-relaxed">
-            Founded in 2014, Aadish Investments was built on the core belief that financial
+            Founded in 2012, Aadish Investments was built on the core belief that financial
             guidance must be transparent, long-term, and deeply anchored in family security.
           </p>
         </div>
@@ -122,7 +123,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenWhatsApp
             </h2>
             <div className="space-y-4 text-stone-600 text-sm leading-relaxed">
               <p>
-                Founded in 2014 by Shrinivas Kulkarni and Prachi Kulkarni, Aadish Investments
+                Founded in 2012 by Shrinivas Kulkarni and Prachi Kulkarni, Aadish Investments
                 originated from a proud second-generation involvement in life-insurance protection
                 and family financial guidance.
               </p>
@@ -170,7 +171,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenWhatsApp
           <div className="lg:col-span-6 space-y-4">
             <div className="rounded-2xl overflow-hidden shadow-lg border border-stone-200 bg-stone-100">
               <img
-                src="/src/assets/images/pune_narayan_peth_office_1790590983109.jpg"
+                src={officeImg}
                 alt="Aadish Investments Pune Office in Narayan Peth"
                 className="w-full h-80 sm:h-96 object-cover"
                 referrerPolicy="no-referrer"
@@ -181,7 +182,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenWhatsApp
                 <MapPin className="w-3.5 h-3.5 text-amber-600" />
                 <span>580, Narayan Peth, Pune, Maharashtra</span>
               </span>
-              <span>Welcoming clients since 2014</span>
+              <span>Welcoming clients since 2012</span>
             </div>
           </div>
         </div>

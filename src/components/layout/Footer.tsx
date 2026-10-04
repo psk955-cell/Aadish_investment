@@ -23,7 +23,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="lg:col-span-2 space-y-4">
             <Logo inverted variant="horizontal" />
             <p className="text-stone-400 text-sm leading-relaxed max-w-sm">
-              Founded in 2014, Aadish Investments provides disciplined financial planning,
+              Founded in 2012, Aadish Investments provides disciplined financial planning,
               mutual fund distribution, life and health insurance protection, and long-term
               wealth advisory in Pune, Maharashtra.
             </p>
@@ -232,7 +232,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
 
           <p className="text-[11px] text-stone-500">
-            *Milestone statistics (₹100 Cr+ AUM, 2,000+ Life Insurance Customers, 1,000+ Wealth Clients, 10 Years MDRT) are based on internal business management records from 2014 onwards, subject to audit and periodic verification. Insurance is the subject matter of solicitation; policy issuance and claim decisions are exclusively decided by the respective insurance companies.
+            *Milestone statistics (₹100 Cr+ AUM, 2,000+ Life Insurance Customers, 1,000+ Wealth Clients, 10 Years MDRT) are based on internal business management records from 2012 onwards, subject to audit and periodic verification. Insurance is the subject matter of solicitation; policy issuance and claim decisions are exclusively decided by the respective insurance companies.
           </p>
         </div>
 

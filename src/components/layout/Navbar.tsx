@@ -43,7 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center gap-4 text-stone-400">
             <span>580, Narayan Peth, Pune, Maharashtra</span>
             <span aria-hidden="true">·</span>
-            <span>Est. 2014</span>
+            <span>Est. 2012</span>
             <span aria-hidden="true">·</span>
             <span className="text-amber-400 font-medium">10 Yrs MDRT Recognition (LIC)</span>
           </div>

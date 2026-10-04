@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import officialLogoImg from '../../assets/images/aadish_official_logo_1790592123149.jpg';
 
 interface LogoProps {
   className?: string;
@@ -6,25 +7,41 @@ interface LogoProps {
   inverted?: boolean;
 }
 
-const DEFAULT_OFFICIAL_LOGO = '/src/assets/images/aadish_official_logo_1790592123149.jpg';
-
 export const Logo: React.FC<LogoProps> = ({
   className = '',
   variant = 'horizontal',
   inverted = false,
 }) => {
   const [logoSrc, setLogoSrc] = useState<string>(() => {
-    return localStorage.getItem('aadish_custom_logo') || DEFAULT_OFFICIAL_LOGO;
+    const custom = localStorage.getItem('aadish_custom_logo');
+    if (custom && !custom.startsWith('/src/')) {
+      return custom;
+    }
+    return officialLogoImg;
   });
 
   useEffect(() => {
     const handleStorageChange = () => {
       const stored = localStorage.getItem('aadish_custom_logo');
-      if (stored) setLogoSrc(stored);
+      if (stored && !stored.startsWith('/src/')) {
+        setLogoSrc(stored);
+      } else {
+        setLogoSrc(officialLogoImg);
+      }
     };
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    // If the image fails to load, fallback to bundled official logo or static /logo.jpg
+    const img = e.currentTarget;
+    if (img.src !== officialLogoImg) {
+      img.src = officialLogoImg;
+    } else {
+      img.src = '/logo.jpg';
+    }
+  };
 
   const textColor = inverted ? 'text-white' : 'text-stone-900';
   const subtextColor = inverted ? 'text-amber-300' : 'text-stone-600';
@@ -38,6 +55,8 @@ export const Logo: React.FC<LogoProps> = ({
             alt="Aadish Investments Official Logo"
             className="w-full h-full object-contain"
             referrerPolicy="no-referrer"
+            loading="eager"
+            onError={handleImageError}
           />
         </div>
         <div className="flex flex-col">
@@ -61,6 +80,8 @@ export const Logo: React.FC<LogoProps> = ({
           alt="Aadish Investments Official Logo"
           className="w-full h-full object-contain"
           referrerPolicy="no-referrer"
+          loading="eager"
+          onError={handleImageError}
         />
       </div>
 
