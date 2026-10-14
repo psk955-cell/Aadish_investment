@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { OFFICIAL_LOGO_DATA_URI } from '../../assets/logoBase64';
 import officialLogoImg from '../../assets/images/aadish_official_logo_1790592123149.jpg';
 
 interface LogoProps {
@@ -14,19 +15,27 @@ export const Logo: React.FC<LogoProps> = ({
 }) => {
   const [logoSrc, setLogoSrc] = useState<string>(() => {
     const custom = localStorage.getItem('aadish_custom_logo');
+    // If custom logo was a legacy relative /src/ path, discard it and use the bundled data URI
     if (custom && !custom.startsWith('/src/')) {
       return custom;
     }
-    return officialLogoImg;
+    return OFFICIAL_LOGO_DATA_URI || officialLogoImg;
   });
 
   useEffect(() => {
+    // Clean up any stale /src/... path in localStorage
+    const stored = localStorage.getItem('aadish_custom_logo');
+    if (stored && stored.startsWith('/src/')) {
+      localStorage.removeItem('aadish_custom_logo');
+      setLogoSrc(OFFICIAL_LOGO_DATA_URI);
+    }
+
     const handleStorageChange = () => {
-      const stored = localStorage.getItem('aadish_custom_logo');
-      if (stored && !stored.startsWith('/src/')) {
-        setLogoSrc(stored);
+      const updated = localStorage.getItem('aadish_custom_logo');
+      if (updated && !updated.startsWith('/src/')) {
+        setLogoSrc(updated);
       } else {
-        setLogoSrc(officialLogoImg);
+        setLogoSrc(OFFICIAL_LOGO_DATA_URI);
       }
     };
     window.addEventListener('storage', handleStorageChange);
@@ -34,10 +43,9 @@ export const Logo: React.FC<LogoProps> = ({
   }, []);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    // If the image fails to load, fallback to bundled official logo or static /logo.jpg
     const img = e.currentTarget;
-    if (img.src !== officialLogoImg) {
-      img.src = officialLogoImg;
+    if (img.src !== OFFICIAL_LOGO_DATA_URI) {
+      img.src = OFFICIAL_LOGO_DATA_URI;
     } else {
       img.src = '/logo.jpg';
     }
@@ -53,9 +61,10 @@ export const Logo: React.FC<LogoProps> = ({
           <img
             src={logoSrc}
             alt="Aadish Investments Official Logo"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain aspect-square select-none block"
             referrerPolicy="no-referrer"
             loading="eager"
+            decoding="sync"
             onError={handleImageError}
           />
         </div>
@@ -74,13 +83,14 @@ export const Logo: React.FC<LogoProps> = ({
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       {/* Official Brand Logo Emblem with Eggshell, Golden Rupee & 'Our Opinion Counts' */}
-      <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl overflow-hidden bg-white shadow-xs border border-stone-200 p-0.5 shrink-0 flex items-center justify-center">
+      <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl overflow-hidden bg-white shadow-xs border border-stone-200 p-0.5 shrink-0 flex items-center justify-center transition-all duration-200">
         <img
           src={logoSrc}
           alt="Aadish Investments Official Logo"
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain aspect-square select-none block filter drop-shadow-xs"
           referrerPolicy="no-referrer"
           loading="eager"
+          decoding="sync"
           onError={handleImageError}
         />
       </div>
