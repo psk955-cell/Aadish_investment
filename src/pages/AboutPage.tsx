@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageId } from '../types';
 import { COMPANY_INFO } from '../data/content';
+import {
+  OFFICIAL_SHRINIVAS_DATA_URI,
+  OFFICIAL_PRACHI_DATA_URI,
+} from '../assets/founderPhotosBase64';
 import officeImg from '../assets/images/pune_narayan_peth_office_1790590983109.jpg';
 import {
   Award,
@@ -25,11 +29,33 @@ interface AboutPageProps {
 
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenWhatsApp }) => {
   const [shrinivasPhoto, setShrinivasPhoto] = useState<string>(() => {
-    return (
-      localStorage.getItem('aadish_shrinivas_custom_photo') ||
-      COMPANY_INFO.contacts.shrinivas.image
-    );
+    const custom = localStorage.getItem('aadish_shrinivas_custom_photo');
+    if (custom && !custom.startsWith('/src/')) {
+      return custom;
+    }
+    return OFFICIAL_SHRINIVAS_DATA_URI || COMPANY_INFO.contacts.shrinivas.image;
   });
+
+  const [prachiPhoto, setPrachiPhoto] = useState<string>(() => {
+    const custom = localStorage.getItem('aadish_prachi_custom_photo');
+    if (custom && !custom.startsWith('/src/')) {
+      return custom;
+    }
+    return OFFICIAL_PRACHI_DATA_URI || COMPANY_INFO.contacts.prachi.image;
+  });
+
+  useEffect(() => {
+    const s = localStorage.getItem('aadish_shrinivas_custom_photo');
+    if (s && s.startsWith('/src/')) {
+      localStorage.removeItem('aadish_shrinivas_custom_photo');
+      setShrinivasPhoto(OFFICIAL_SHRINIVAS_DATA_URI);
+    }
+    const p = localStorage.getItem('aadish_prachi_custom_photo');
+    if (p && p.startsWith('/src/')) {
+      localStorage.removeItem('aadish_prachi_custom_photo');
+      setPrachiPhoto(OFFICIAL_PRACHI_DATA_URI);
+    }
+  }, []);
 
   const handleCustomPhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -45,13 +71,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenWhatsApp
     }
   };
 
-  const [prachiPhoto, setPrachiPhoto] = useState<string>(() => {
-    return (
-      localStorage.getItem('aadish_prachi_custom_photo') ||
-      COMPANY_INFO.contacts.prachi.image
-    );
-  });
-
   const handleCustomPrachiPhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -63,6 +82,24 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenWhatsApp
         }
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleShrinivasImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const img = e.currentTarget;
+    if (img.src !== OFFICIAL_SHRINIVAS_DATA_URI) {
+      img.src = OFFICIAL_SHRINIVAS_DATA_URI;
+    } else {
+      img.src = '/shrinivas.jpg';
+    }
+  };
+
+  const handlePrachiImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const img = e.currentTarget;
+    if (img.src !== OFFICIAL_PRACHI_DATA_URI) {
+      img.src = OFFICIAL_PRACHI_DATA_URI;
+    } else {
+      img.src = '/prachi.jpg';
     }
   };
   const steps = [
@@ -213,8 +250,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenWhatsApp
                     <img
                       src={shrinivasPhoto}
                       alt="Shrinivas Kulkarni, Co-Founder"
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-cover object-top select-none"
                       referrerPolicy="no-referrer"
+                      loading="eager"
+                      decoding="sync"
+                      onError={handleShrinivasImgError}
                     />
                     <label className="absolute inset-0 bg-stone-900/60 text-white text-[10px] font-medium flex flex-col items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-center p-1">
                       <Camera className="w-4 h-4 text-amber-400" />
@@ -292,8 +332,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenWhatsApp
                     <img
                       src={prachiPhoto}
                       alt="Prachi Kulkarni, Co-Founder"
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-cover object-top select-none"
                       referrerPolicy="no-referrer"
+                      loading="eager"
+                      decoding="sync"
+                      onError={handlePrachiImgError}
                     />
                     <label className="absolute inset-0 bg-stone-900/60 text-white text-[10px] font-medium flex flex-col items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-center p-1">
                       <Camera className="w-4 h-4 text-amber-400" />

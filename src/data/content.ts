@@ -6,6 +6,10 @@ import {
   Testimonial,
   SuccessStory,
 } from '../types';
+import {
+  OFFICIAL_SHRINIVAS_DATA_URI,
+  OFFICIAL_PRACHI_DATA_URI,
+} from '../assets/founderPhotosBase64';
 import shrinivasPortraitImg from '../assets/images/shrinivas_portrait_official_1790591856519.jpg';
 import prachiPortraitImg from '../assets/images/prachi_portrait_official_1790592294984.jpg';
 import mdrtAwardImg from '../assets/images/mdrt_award_recognition_1790590962428.jpg';
@@ -32,7 +36,7 @@ export const COMPANY_INFO = {
       email: 'aadishinvestment@gmail.com',
       experienceYears: '12+ Years Industry Experience',
       focus: 'Life Insurance, MDRT Honoree, Wealth Creation & Goal Planning',
-      image: shrinivasPortraitImg,
+      image: OFFICIAL_SHRINIVAS_DATA_URI || shrinivasPortraitImg,
       awardImage: mdrtAwardImg,
       bio: 'Shrinivas Kulkarni co-founded Aadish Investments in 2012, continuing a proud second-generation family legacy in life insurance and financial protection. Over the last decade, he has achieved MDRT (Million Dollar Round Table) recognition connected with LIC for 10 consecutive years. His advisory philosophy centers on deep client relationships, transparent risk management, and disciplined execution.',
     },
@@ -44,7 +48,7 @@ export const COMPANY_INFO = {
       email: 'aadishinvestment@gmail.com',
       experienceYears: '10+ Years Industry Experience',
       focus: 'Client Relationship Management, Health & Mediclaim, Systematic Investments',
-      image: prachiPortraitImg,
+      image: OFFICIAL_PRACHI_DATA_URI || prachiPortraitImg,
       bio: 'Prachi Kulkarni leads client onboarding and operational advisory at Aadish Investments. With specialized expertise in health insurance portfolios, comprehensive family mediclaim analysis, and systematic investment planning, she ensures clients receive swift, empathetic, and detail-oriented financial support at every life stage.',
     },
   },

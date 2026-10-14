@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageId } from '../types';
 import { COMPANY_INFO, SERVICES_LIST, GOALS_LIST, TESTIMONIALS, MARKET_UPDATES, BLOG_POSTS } from '../data/content';
+import {
+  OFFICIAL_SHRINIVAS_DATA_URI,
+  OFFICIAL_PRACHI_DATA_URI,
+} from '../assets/founderPhotosBase64';
 import { SipCalculatorWidget } from '../components/calculators/SipCalculatorWidget';
 import heroFamilyImg from '../assets/images/hero_family_planning_1790590921036.jpg';
 import {
@@ -50,13 +54,35 @@ export const HomePage: React.FC<HomePageProps> = ({
   const [leadConsent, setLeadConsent] = useState(true);
   const [leadSubmitted, setLeadSubmitted] = useState(false);
 
-  // Founder photo state with localStorage persistence
+  // Founder photo state with localStorage persistence and official fallback
   const [shrinivasPhoto, setShrinivasPhoto] = useState<string>(() => {
-    return (
-      localStorage.getItem('aadish_shrinivas_custom_photo') ||
-      COMPANY_INFO.contacts.shrinivas.image
-    );
+    const custom = localStorage.getItem('aadish_shrinivas_custom_photo');
+    if (custom && !custom.startsWith('/src/')) {
+      return custom;
+    }
+    return OFFICIAL_SHRINIVAS_DATA_URI || COMPANY_INFO.contacts.shrinivas.image;
   });
+
+  const [prachiPhoto, setPrachiPhoto] = useState<string>(() => {
+    const custom = localStorage.getItem('aadish_prachi_custom_photo');
+    if (custom && !custom.startsWith('/src/')) {
+      return custom;
+    }
+    return OFFICIAL_PRACHI_DATA_URI || COMPANY_INFO.contacts.prachi.image;
+  });
+
+  useEffect(() => {
+    const s = localStorage.getItem('aadish_shrinivas_custom_photo');
+    if (s && s.startsWith('/src/')) {
+      localStorage.removeItem('aadish_shrinivas_custom_photo');
+      setShrinivasPhoto(OFFICIAL_SHRINIVAS_DATA_URI);
+    }
+    const p = localStorage.getItem('aadish_prachi_custom_photo');
+    if (p && p.startsWith('/src/')) {
+      localStorage.removeItem('aadish_prachi_custom_photo');
+      setPrachiPhoto(OFFICIAL_PRACHI_DATA_URI);
+    }
+  }, []);
 
   const handleCustomPhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -72,12 +98,10 @@ export const HomePage: React.FC<HomePageProps> = ({
     }
   };
 
-  const [prachiPhoto, setPrachiPhoto] = useState<string>(() => {
-    return (
-      localStorage.getItem('aadish_prachi_custom_photo') ||
-      COMPANY_INFO.contacts.prachi.image
-    );
-  });
+  const handleResetShrinivasPhoto = () => {
+    localStorage.removeItem('aadish_shrinivas_custom_photo');
+    setShrinivasPhoto(OFFICIAL_SHRINIVAS_DATA_URI);
+  };
 
   const handleCustomPrachiPhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -90,6 +114,29 @@ export const HomePage: React.FC<HomePageProps> = ({
         }
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleResetPrachiPhoto = () => {
+    localStorage.removeItem('aadish_prachi_custom_photo');
+    setPrachiPhoto(OFFICIAL_PRACHI_DATA_URI);
+  };
+
+  const handleShrinivasImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const img = e.currentTarget;
+    if (img.src !== OFFICIAL_SHRINIVAS_DATA_URI) {
+      img.src = OFFICIAL_SHRINIVAS_DATA_URI;
+    } else {
+      img.src = '/shrinivas.jpg';
+    }
+  };
+
+  const handlePrachiImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const img = e.currentTarget;
+    if (img.src !== OFFICIAL_PRACHI_DATA_URI) {
+      img.src = OFFICIAL_PRACHI_DATA_URI;
+    } else {
+      img.src = '/prachi.jpg';
     }
   };
 
@@ -431,23 +478,41 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Shrinivas Kulkarni Card */}
           <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm flex flex-col sm:flex-row">
-            <div className="sm:w-5/12 bg-stone-100 relative group">
+            <div className="sm:w-5/12 bg-stone-100 relative group overflow-hidden">
               <img
                 src={shrinivasPhoto}
                 alt="Shrinivas Kulkarni, Co-Founder of Aadish Investments"
-                className="w-full h-64 sm:h-full object-cover object-top"
+                className="w-full h-72 sm:h-full object-cover object-top select-none transition-transform duration-500 group-hover:scale-103"
                 referrerPolicy="no-referrer"
+                loading="eager"
+                decoding="sync"
+                onError={handleShrinivasImgError}
               />
-              <label className="absolute bottom-2 left-2 right-2 bg-stone-900/85 hover:bg-stone-900 text-white text-[11px] font-medium py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 backdrop-blur-xs cursor-pointer opacity-95 hover:opacity-100 transition-all shadow-sm">
-                <Camera className="w-3.5 h-3.5 text-amber-400" />
-                <span>Upload Original Photo</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleCustomPhotoUpload}
-                  className="hidden"
-                />
-              </label>
+              <div className="absolute top-3 left-3 bg-stone-900/80 backdrop-blur-md text-amber-400 border border-amber-400/30 text-[10px] font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm pointer-events-none">
+                <CheckCircle2 className="w-3 h-3 text-amber-400" />
+                <span>Original Official Photo</span>
+              </div>
+              <div className="absolute bottom-2 left-2 right-2 flex items-center gap-1.5">
+                <label className="flex-1 bg-stone-900/85 hover:bg-stone-900 text-white text-[11px] font-medium py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 backdrop-blur-xs cursor-pointer opacity-95 hover:opacity-100 transition-all shadow-sm">
+                  <Camera className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Update Photo</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleCustomPhotoUpload}
+                    className="hidden"
+                  />
+                </label>
+                {localStorage.getItem('aadish_shrinivas_custom_photo') && (
+                  <button
+                    onClick={handleResetShrinivasPhoto}
+                    title="Reset to Original Official Photo"
+                    className="bg-stone-900/85 hover:bg-stone-900 text-amber-400 text-[11px] px-2.5 py-1.5 rounded-lg backdrop-blur-xs transition-all shadow-sm cursor-pointer"
+                  >
+                    Reset
+                  </button>
+                )}
+              </div>
             </div>
             <div className="sm:w-7/12 p-6 sm:p-7 flex flex-col justify-between space-y-4">
               <div>
@@ -496,23 +561,41 @@ export const HomePage: React.FC<HomePageProps> = ({
 
           {/* Prachi Kulkarni Card */}
           <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm flex flex-col sm:flex-row">
-            <div className="sm:w-5/12 bg-stone-100 relative group">
+            <div className="sm:w-5/12 bg-stone-100 relative group overflow-hidden">
               <img
                 src={prachiPhoto}
                 alt="Prachi Kulkarni, Co-Founder of Aadish Investments"
-                className="w-full h-64 sm:h-full object-cover object-top"
+                className="w-full h-72 sm:h-full object-cover object-top select-none transition-transform duration-500 group-hover:scale-103"
                 referrerPolicy="no-referrer"
+                loading="eager"
+                decoding="sync"
+                onError={handlePrachiImgError}
               />
-              <label className="absolute bottom-2 left-2 right-2 bg-stone-900/85 hover:bg-stone-900 text-white text-[11px] font-medium py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 backdrop-blur-xs cursor-pointer opacity-95 hover:opacity-100 transition-all shadow-sm">
-                <Camera className="w-3.5 h-3.5 text-amber-400" />
-                <span>Upload Original Photo</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleCustomPrachiPhotoUpload}
-                  className="hidden"
-                />
-              </label>
+              <div className="absolute top-3 left-3 bg-stone-900/80 backdrop-blur-md text-amber-400 border border-amber-400/30 text-[10px] font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm pointer-events-none">
+                <CheckCircle2 className="w-3 h-3 text-amber-400" />
+                <span>Original Official Photo</span>
+              </div>
+              <div className="absolute bottom-2 left-2 right-2 flex items-center gap-1.5">
+                <label className="flex-1 bg-stone-900/85 hover:bg-stone-900 text-white text-[11px] font-medium py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 backdrop-blur-xs cursor-pointer opacity-95 hover:opacity-100 transition-all shadow-sm">
+                  <Camera className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Update Photo</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleCustomPrachiPhotoUpload}
+                    className="hidden"
+                  />
+                </label>
+                {localStorage.getItem('aadish_prachi_custom_photo') && (
+                  <button
+                    onClick={handleResetPrachiPhoto}
+                    title="Reset to Original Official Photo"
+                    className="bg-stone-900/85 hover:bg-stone-900 text-amber-400 text-[11px] px-2.5 py-1.5 rounded-lg backdrop-blur-xs transition-all shadow-sm cursor-pointer"
+                  >
+                    Reset
+                  </button>
+                )}
+              </div>
             </div>
             <div className="sm:w-7/12 p-6 sm:p-7 flex flex-col justify-between space-y-4">
               <div>
