@@ -64,6 +64,16 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  // Track SPA page navigation in Google Analytics
+  useEffect(() => {
+    if (typeof (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag === 'function') {
+      (window as unknown as { gtag: (...args: unknown[]) => void }).gtag('config', 'G-EB6Q7Z513T', {
+        page_path: window.location.pathname + (window.location.hash || '#home'),
+        page_title: document.title,
+      });
+    }
+  }, [currentPage]);
+
   const navigateTo = (page: PageId) => {
     setCurrentPage(page);
     window.location.hash = page;
