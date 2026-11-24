@@ -48,22 +48,6 @@ export const HomePage: React.FC<HomePageProps> = ({
   const [leadConsent, setLeadConsent] = useState(true);
   const [leadSubmitted, setLeadSubmitted] = useState(false);
 
-  const handleShrinivasImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const img = e.currentTarget;
-    if (!img.dataset.fallbackApplied) {
-      img.dataset.fallbackApplied = 'true';
-      img.src = '/shrinivas.jpg';
-    }
-  };
-
-  const handlePrachiImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const img = e.currentTarget;
-    if (!img.dataset.fallbackApplied) {
-      img.dataset.fallbackApplied = 'true';
-      img.src = '/prachi.jpg';
-    }
-  };
-
   const getServiceIcon = (iconName: string) => {
     switch (iconName) {
       case 'TrendingUp':
@@ -401,19 +385,8 @@ export const HomePage: React.FC<HomePageProps> = ({
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Shrinivas Kulkarni Card */}
-          <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm flex flex-col sm:flex-row">
-            <div className="sm:w-5/12 bg-stone-100 relative group overflow-hidden">
-              <img
-                src={COMPANY_INFO.contacts.shrinivas.image}
-                alt="Shrinivas Kulkarni, Co-Founder of Aadish Investments"
-                className="w-full h-72 sm:h-full object-cover object-top select-none transition-transform duration-500 group-hover:scale-103"
-                referrerPolicy="no-referrer"
-                loading="eager"
-                decoding="sync"
-                onError={handleShrinivasImgError}
-              />
-            </div>
-            <div className="sm:w-7/12 p-6 sm:p-7 flex flex-col justify-between space-y-4">
+          <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm flex flex-col">
+            <div className="w-full p-6 sm:p-7 flex flex-col justify-between space-y-4 h-full">
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-amber-700 font-semibold text-xs uppercase tracking-wider">
@@ -459,19 +432,8 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
 
           {/* Prachi Kulkarni Card */}
-          <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm flex flex-col sm:flex-row">
-            <div className="sm:w-5/12 bg-stone-100 relative group overflow-hidden">
-              <img
-                src={COMPANY_INFO.contacts.prachi.image}
-                alt="Prachi Kulkarni, Co-Founder of Aadish Investments"
-                className="w-full h-72 sm:h-full object-cover object-top select-none transition-transform duration-500 group-hover:scale-103"
-                referrerPolicy="no-referrer"
-                loading="eager"
-                decoding="sync"
-                onError={handlePrachiImgError}
-              />
-            </div>
-            <div className="sm:w-7/12 p-6 sm:p-7 flex flex-col justify-between space-y-4">
+          <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm flex flex-col">
+            <div className="w-full p-6 sm:p-7 flex flex-col justify-between space-y-4 h-full">
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-amber-700 font-semibold text-xs uppercase tracking-wider">
